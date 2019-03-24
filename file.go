@@ -26,17 +26,16 @@ type Errorf func(args ...interface{})
 // The input and output file names are relative to the testdata/
 // folder of the caller.
 //
-// The provided function is generally of the two form:
+// The provided function is one of these two forms:
 //
 //    func (input someType) (output someOtherType)
 //    func (input someType) (output someOtherType,  err error)
 //
-// The input file is read and the contents passed to the provided
-// function. If the input type of the function is bytes, runes or
-// string, the input file contents are not processed. For any other
-// type, the input is assumed to be a json file and the contents are
-// unmarshaled into the provided type. The output is similarly
-// marshaled to JSON if needed.
+// The input file is read and the contents passed through this
+// function. For input arguments of type string, []byte or []rune the
+// contents of the files are passed as is. For other types,  the
+// contents are assumed to be JSON encoded.  The output is similarly
+// JSON encoded for such types.
 //
 // The discrepancies are reported using regular diff format via the
 // error function (which sports the same signature as testing.T.Error

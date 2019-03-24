@@ -61,14 +61,19 @@ func TestSuccess(t *testing.T) {
 		return input
 	}
 	id4 := identity
+
 	id5 := func(input struct{ OK int }) struct{ OK int } {
 		return input
+	}
+	id6 := func(input *struct{ OK int }) struct{ OK int } {
+		return *input
 	}
 	test.File(t.Fatal, "input.txt", "output.txt", id1)
 	test.File(t.Fatal, "input.txt", "output.txt", id2)
 	test.File(t.Fatal, "input.txt", "output.txt", id3)
 	test.File(t.Fatal, "input.txt", "output.txt", id4)
 	test.File(t.Fatal, "input.json", "output.json", id5)
+	test.File(t.Fatal, "input.json", "output.json", id6)
 }
 
 func TestInvalidJSON(t *testing.T) {
