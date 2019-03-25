@@ -93,7 +93,7 @@ func diff(expected, got string) string {
 	result := ""
 	for _, line := range lines {
 		text := line.Text
-		if text[len(text)-1] == '\n' {
+		if text != "" && text[len(text)-1] == '\n' {
 			text = text[:len(text)-1]
 		}
 
