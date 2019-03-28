@@ -1,14 +1,7 @@
 language: go
-sudo: false
-services:
-- mysql
-- mongodb
-addons:
-  postgresql: "9.5"
 before_script:
 - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-- psql -c 'CREATE DATABASE dot_test;' -U postgres
-- mongo dot_test --eval 'db.createUser({user:"root",pwd:"test",roles:["readWrite"]});'
+- go get -u gopkg.in/russross/blackfriday.v2
 - bash ./x/lint.sh
 notifications:
   email: false
