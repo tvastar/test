@@ -55,7 +55,7 @@ func Markdown(src, dest, pkg string) (err error) {
 	var output bytes.Buffer
 
 	im := [][2]string{{"", "testing"}, {"", "fmt"}, {"", "log"}}
-	i := info{Package: pkg, Imports: im, Generator: frame.File}
+	i := info{Package: pkg, Imports: im, Generator: sanitize(frame.File)}
 
 	count := 0
 	opts := blackfriday.WithExtensions(blackfriday.CommonExtensions)
@@ -82,6 +82,13 @@ func Markdown(src, dest, pkg string) (err error) {
 	must(err, string(p))
 
 	return ioutil.WriteFile(dest, result, 0644)
+}
+
+func sanitize(fileName string) string {
+	if x := strings.Index(fileName, "github.com"); x >= 0 {
+		return fileName[x:]
+	}
+	return fileName
 }
 
 func formatFence(w io.Writer, fence, title string, count int) [][2]string {
