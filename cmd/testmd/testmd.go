@@ -23,6 +23,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/tvastar/test"
 )
@@ -49,7 +50,7 @@ func main() {
 		return
 	}
 
-	f, err := ioutil.TempFile("", "*_test.go")
+	f, err := ioutil.TempFile("", "*"+pkgName+".go")
 	fail(err)
 	name := f.Name()
 	fail(f.Close())
@@ -58,7 +59,11 @@ func main() {
 	}()
 
 	fail(test.Markdown(flag.Arg(0), name, pkgName))
-	args := append([]string{"test", name}, flag.Args()[1:]...)
+	tool := "run"
+	if strings.HasSuffix(pkgName, "test") {
+		tool = "test"
+	}
+	args := append([]string{tool, name}, flag.Args()[1:]...)
 	cmd := exec.Command("go", args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
