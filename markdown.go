@@ -65,7 +65,7 @@ func Markdown(src, dest, pkg string) (err error) {
 				count++
 				fence := string(n.Literal)
 				title := string(n.CodeBlockData.Info)
-				im := formatFence(&output, fence, title, count)
+				im := formatFence(&output, fence, title, pkg, count)
 				i.Imports = append(i.Imports, im...)
 			}
 			return blackfriday.GoToNext
@@ -91,9 +91,9 @@ func sanitize(fileName string) string {
 	return fileName
 }
 
-func formatFence(w io.Writer, fence, title string, count int) [][2]string {
+func formatFence(w io.Writer, fence, title, pkg string, count int) [][2]string {
 	title = strings.TrimSpace(title)
-	if title == "" && !strings.HasPrefix(title, "go") {
+	if title == "" || !strings.HasPrefix(title, "go") {
 		return nil
 	}
 
@@ -101,7 +101,17 @@ func formatFence(w io.Writer, fence, title string, count int) [][2]string {
 	name := ""
 	if title != "" && len(parts) > 1 {
 		name = parts[1]
-	} else {
+	}
+
+	if strings.Contains(name, ".") {
+		parts = strings.SplitN(name, ".", 2)
+		if strings.TrimSpace(parts[0]) != pkg {
+			return nil
+		}
+		name = parts[1]
+	}
+
+	if name == "" {
 		name = fmt.Sprintf("Example_%d", count)
 	}
 
