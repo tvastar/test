@@ -50,7 +50,7 @@ func main() {
 		return
 	}
 
-	f, err := ioutil.TempFile("", "*"+pkgName+".go")
+	f, err := ioutil.TempFile("", "*_"+pkgName+".go")
 	fail(err)
 	name := f.Name()
 	fail(f.Close())
