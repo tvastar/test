@@ -31,4 +31,10 @@ func TestMarkdown(t *testing.T) {
 	})
 }
 
+func TestMarkdownError(t *testing.T) {
+	if err := test.Markdown("non_existent.md", "boo", "main"); err == nil {
+		t.Fatal("Did not fail on non-existent file")
+	}
+}
+
 func ignore(err error) {}
