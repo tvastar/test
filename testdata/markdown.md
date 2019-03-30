@@ -51,3 +51,7 @@ fmt.Println("ok", stranger())
 ```go unused.Garbage
 This will be skipped because of package name
 ```
+
+```python
+python scripts should get dropped
+```
