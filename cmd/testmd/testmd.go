@@ -17,14 +17,14 @@
 // will be assumed to be a runnable go program and "go run" will be
 // used instead of "go test".
 //
-// The snippets of code must use the markdown code fence with either
-// no info at all or an info string starting with "go"
+// The snippets of code must use the markdown code fence with an info
+// string starting with "go" (i.e. go or golang)
 //
 // Additional fields on the info string can provide the name of the
 // test:
 //
 //     ```golang TestSomething
-//     ....
+//        ..some stuff here..
 //     ```
 //
 // If the name starts with anything but Test, an empty function with
@@ -40,7 +40,7 @@
 // Snippets can be marked to be ignored:
 //
 //      ```golang skip
-//      ...
+//         ..some stuff here..
 //      ```
 //
 // A single markdown can be used to generate multiple package
@@ -48,7 +48,7 @@
 // specific package by using the name of the package:
 //
 //      ```golang script_one.global
-//      ....
+//         ..some stuff here..
 //      ```
 //
 // The snippet above will only be included if the package name is
@@ -59,7 +59,7 @@
 //
 //       ```golang
 //       // import fmt
-//       ....
+//       ..some stuf here..
 //       ```
 //
 // Usage:

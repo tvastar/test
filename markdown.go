@@ -24,8 +24,7 @@ import (
 // output file name.
 //
 // Fenced blocks can also specify the test/example name in the info string.
-// The first word of the infostring must be go or golang (or the whole info
-// string can be empty).
+// The first word of the infostring must be go or golang
 //
 // A fenced block can "import" other modules by simply placing a comment
 // of the form `// import path`.
@@ -89,7 +88,7 @@ func sanitize(fileName string) string {
 
 func formatFence(w io.Writer, fence, title, pkg string, count int) [][2]string {
 	title = strings.TrimSpace(title)
-	if title == "" || !strings.HasPrefix(title, "go") {
+	if !strings.HasPrefix(title, "go") {
 		return nil
 	}
 
