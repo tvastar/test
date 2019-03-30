@@ -22,7 +22,7 @@
 //
 // Additional fields on the info string can provide the name of the
 // test:
-// 
+//
 //     ```golang TestSomething
 //     ....
 //     ```
@@ -80,7 +80,7 @@ import (
 	"github.com/tvastar/test"
 )
 
-//go:generate go run testmd.go -o testmd_test.go -pkg main_test ../../README.md
+//go:generate go run testmd.go -o testmd_test.go -pkg main_test README.md
 
 var output = flag.String("o", "", "output test file name")
 var pkg = flag.String("pkg", "", "test package name")
