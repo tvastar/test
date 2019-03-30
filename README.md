@@ -74,18 +74,21 @@ fmt.Println("ok", stranger())
 
 // Output: ok stranger
 ```
-
+````
 If the info name has a dot in it, the word before the dot is compared
 to the package name. If they don't match the fence block is
 skipped. This allows a single markdown to have multiple fence blocks
 destined for different packages:
 
-``
+````
 ```go firstPackage.DoSomething
 ...
+```
+
 ```go secondPackage.
 ...
 ```
+````
   
 
 
