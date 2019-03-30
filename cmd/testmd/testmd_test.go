@@ -9,7 +9,6 @@ import (
 )
 
 func Example_1() {
-
 	if len("hello") != 5 {
 		fmt.Println("This should not happen")
 	}
@@ -19,7 +18,6 @@ func Example_1() {
 }
 
 func TestBoo(t *testing.T) {
-
 	// import runtime
 	_, fname, _, _ := runtime.Caller(1)
 	if fname == "" {
@@ -32,7 +30,6 @@ func stranger() string {
 	return "stranger"
 }
 func Example_UsingSomethingDefinedInGlobal() {
-
 	fmt.Println("ok", stranger())
 
 	// Output: ok stranger

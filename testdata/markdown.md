@@ -35,7 +35,7 @@ variable:
    booya
 ```
 
-```go global
+```go main.global
 func stranger() string {
 	return "stranger"
 }
@@ -46,4 +46,8 @@ func stranger() string {
 fmt.Println("ok", stranger())
 
 // Output: ok stranger
+```
+
+```go unused.Garbage
+This will be skipped because of package name
 ```

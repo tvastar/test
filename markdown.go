@@ -37,11 +37,7 @@ import (
 func Markdown(src, dest, pkg string) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			if e, ok := r.(error); ok {
-				err = e
-			} else {
-				panic(r)
-			}
+			err = r.(error)
 		}
 	}()
 
