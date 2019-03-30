@@ -6,13 +6,65 @@
 //
 //    $ go get github.com/tvastar/test/cmd/testmd
 //
+// This is useful when writing tutorials in markdown and making sure
+// all the tutorials remain valid as the code underneath changes
+//
 // If no output file is specified (via -o), a temporary go file is
-// generated and it is immediately tested via `go test`.   Any
+// generated and it is immediately run via `go test`.   Any
 // additional arguments are passed through to go test.
+//
+// If a package name is provided and it does not include '_test', it
+// will be assumed to be a runnable go program and "go run" will be
+// used instead of "go test".
+//
+// The snippets of code must use the markdown code fence with either
+// no info at all or an info string starting with "go"
+//
+// Additional fields on the info string can provide the name of the
+// test:
+// 
+//     ```golang TestSomething
+//     ....
+//     ```
+//
+// If the name starts with anything but Test, an empty function with
+// no args is produced which conveniently works for Examples
+//
+// Global variables can be introduced by using the special name of
+// global:
+//
+//     ```golang global
+//     var hidden := flag.Bool("hidden", false, "is it hidden?")
+//     ```
+//
+// Snippets can be marked to be ignored:
+//
+//      ```golang skip
+//      ...
+//      ```
+//
+// A single markdown can be used to generate multiple package
+// entries.  A snippet can be designated as being limited to a
+// specific package by using the name of the package:
+//
+//      ```golang script_one.global
+//      ....
+//      ```
+//
+// The snippet above will only be included if the package name is
+// script_one. This is useful when describing multiple main package
+// options in one tutorial.
+//
+// Snippets can indicate import paths via a comment:
+//
+//       ```golang
+//       // import fmt
+//       ....
+//       ```
 //
 // Usage:
 //
-//    $ testmd README.md -pkg readme_test -o readme_test.go
+//    $ testmd -pkg readme_test -o readme_test.go README.md
 //    $ testmd README.md -v
 //
 package main
