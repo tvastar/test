@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"time"
 
 	"github.com/sergi/go-diff/diffmatchpatch"
 )
@@ -91,9 +92,13 @@ func File(errorf Errorf, inputFile string, outputFile string, fn interface{}) {
 
 func diff(expected, got string) string {
 	dmp := diffmatchpatch.New()
-	lines := dmp.DiffCleanupSemantic(dmp.DiffMain(expected, got, true))
+	dmp.DiffTimeout = time.Minute * 2
+	wSrc, wDst, warray := dmp.DiffLinesToRunes(expected, got)
+	diffs := dmp.DiffMainRunes(wSrc, wDst, false)
+	diffs = dmp.DiffCharsToLines(diffs, warray)
+
 	result := ""
-	for _, line := range lines {
+	for _, line := range diffs {
 		text := line.Text
 		if text != "" && text[len(text)-1] == '\n' {
 			text = text[:len(text)-1]

@@ -120,8 +120,8 @@ func TestFunctionDiff(t *testing.T) {
 
 	modify := func(input string) (string, error) {
 		lines := strings.Split(input, "\n")
-		expected = "\n- " + lines[0] + "\n+ kaara"
-		return "kaara\n" + strings.Join(lines[1:], "\n"), nil
+		expected = "\n- " + lines[0] + "\n+ fist of fury"
+		return "fist of fury\n" + strings.Join(lines[1:], "\n"), nil
 	}
 
 	test.File(errorf, "input.txt", "output.txt", modify)
