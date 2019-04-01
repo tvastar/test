@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"flag"
 	"io/ioutil"
-	"path"
+	"path/filepath"
 	"reflect"
 	"runtime"
 
@@ -52,10 +52,12 @@ type Errorf func(args ...interface{})
 //    )
 //
 func File(errorf Errorf, inputFile string, outputFile string, fn interface{}) {
-	_, caller, _, _ := runtime.Caller(1)
+	pc := []uintptr{0}
+	runtime.Callers(2, pc)
+	f, _ := runtime.CallersFrames(pc).Next()
 
-	inputFile = path.Join(path.Dir(caller), "testdata/"+inputFile)
-	outputFile = path.Join(path.Dir(caller), "testdata/"+outputFile)
+	inputFile = filepath.Join(filepath.Dir(f.File), "testdata/"+inputFile)
+	outputFile = filepath.Join(filepath.Dir(f.File), "testdata/"+outputFile)
 
 	bytes, err := ioutil.ReadFile(inputFile)
 	if err != nil {
