@@ -22,7 +22,8 @@ func TestMarkdown(t *testing.T) {
 		ignore(outf.Close())
 
 		defer func() { ignore(os.Remove(n)) }()
-		if err := test.Markdown("testdata/markdown.md", n, "main"); err != nil {
+		sources := []string{"testdata/markdown.md"}
+		if err := test.Markdown(sources, n, "main"); err != nil {
 			return "", err
 		}
 
@@ -32,7 +33,8 @@ func TestMarkdown(t *testing.T) {
 }
 
 func TestMarkdownError(t *testing.T) {
-	if err := test.Markdown("non_existent.md", "boo", "main"); err == nil {
+	src := []string{"non_existent.md"}
+	if err := test.Markdown(src, "boo", "main"); err == nil {
 		t.Fatal("Did not fail on non-existent file")
 	}
 }

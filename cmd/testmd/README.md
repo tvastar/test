@@ -62,13 +62,6 @@ variable:
 ```
 
 
-```go global
-func stranger() string {
-	return "stranger"
-}
-```
-
-
 ```go Example_UsingSomethingDefinedInGlobal
 fmt.Println("ok", stranger())
 

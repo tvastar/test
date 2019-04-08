@@ -20,7 +20,7 @@ import (
 )
 
 // Markdown generates test code by compiling together snippets in the
-// provided markdown file name.  The output is written to the provided
+// provided markdown file names.  The output is written to the provided
 // output file name.
 //
 // Fenced blocks can also specify the test/example name in the info string.
@@ -33,7 +33,7 @@ import (
 // for a sample markdown and
 // https://github.com/tvastar/test/blob/master/testdata/markdown_test.go
 // for example generated tests.
-func Markdown(src, dest, pkg string) (err error) {
+func Markdown(src []string, dest, pkg string) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = r.(error)
@@ -44,13 +44,12 @@ func Markdown(src, dest, pkg string) (err error) {
 	runtime.Callers(2, pc)
 	frame, _ := runtime.CallersFrames(pc).Next()
 
-	input, err := ioutil.ReadFile(src)
-	must(err, src)
-
 	var output bytes.Buffer
 
 	im := [][2]string{{"", "testing"}, {"", "fmt"}, {"", "log"}}
 	i := info{Package: pkg, Imports: im, Generator: sanitize(frame.File)}
+
+	input := readSources(src)
 
 	count := 0
 	opts := blackfriday.WithExtensions(blackfriday.CommonExtensions)
@@ -73,10 +72,20 @@ func Markdown(src, dest, pkg string) (err error) {
 	p, err := format.Source(contents)
 	must(err, string(contents))
 
-	result, err := imports.Process(src, p, nil)
+	result, err := imports.Process(src[0], p, nil)
 	must(err, string(p))
 
 	return ioutil.WriteFile(dest, result, 0644)
+}
+
+func readSources(sources []string) []byte {
+	var result []byte
+	for _, src := range sources {
+		input, err := ioutil.ReadFile(src)
+		must(err, src)
+		result = append(result, input...)
+	}
+	return result
 }
 
 func sanitize(fileName string) string {

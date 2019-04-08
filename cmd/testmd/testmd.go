@@ -64,9 +64,14 @@
 //
 // Usage:
 //
-//    $ testmd -pkg readme_test -o readme_test.go README.md
+//    $ testmd -pkg readme_test -o readme_test.go *.md
 //    $ testmd README.md -v
 //
+//
+// Note: all options must come before the markdown file names.
+//
+// Any options provided after the markdown file names will be passed
+// through to `go test` (if no output is specified).
 package main
 
 import (
@@ -80,7 +85,7 @@ import (
 	"github.com/tvastar/test"
 )
 
-//go:generate go run testmd.go -o testmd_test.go -pkg main_test README.md
+//go:generate go run testmd.go -o testmd_test.go -pkg main_test README.md README2.md
 
 var output = flag.String("o", "", "output test file name")
 var pkg = flag.String("pkg", "", "test package name")
@@ -97,8 +102,13 @@ func main() {
 		pkgName = "test"
 	}
 
+	files := []string{flag.Arg(0)}
+	for kk := 1; flag.Arg(kk) != "" && flag.Arg(kk)[0] != '-'; kk++ {
+		files = append(files, flag.Arg(kk))
+	}
+
 	if *output != "" {
-		fail(test.Markdown(flag.Arg(0), *output, pkgName))
+		fail(test.Markdown(files, *output, pkgName))
 		return
 	}
 
@@ -110,7 +120,7 @@ func main() {
 		fail(os.Remove(name))
 	}()
 
-	fail(test.Markdown(flag.Arg(0), name, pkgName))
+	fail(test.Markdown(files, name, pkgName))
 	tool := "run"
 	if strings.HasSuffix(pkgName, "test") {
 		tool = "test"
