@@ -26,12 +26,13 @@ func TestBoo(t *testing.T) {
 
 }
 
-func stranger() string {
-	return "stranger"
-}
 func Example_UsingSomethingDefinedInGlobal() {
 	fmt.Println("ok", stranger())
 
 	// Output: ok stranger
 
+}
+
+func stranger() string {
+	return "stranger"
 }
