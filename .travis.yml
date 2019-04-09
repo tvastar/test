@@ -1,9 +1,17 @@
 language: go
-before_script:
-- go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-- go get -u gopkg.in/russross/blackfriday.v2
-- bash ./x/lint.sh
+go:
+  - 1.12.x
+
+env:
+  - GO111MODULE=on
+
+install: true
 notifications:
   email: false
+
+before_script:
+  - go mod download
+  - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint@HEAD
+  - bash ./x/lint.sh
 script: bash ./x/coverage.sh
 after_success: bash ./x/upload_coverage.sh bash <(curl -s https://codecov.io/bash)

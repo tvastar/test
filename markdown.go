@@ -15,8 +15,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/russross/blackfriday/v2"
 	"golang.org/x/tools/imports"
-	"gopkg.in/russross/blackfriday.v2"
 )
 
 // Markdown generates test code by compiling together snippets in the
