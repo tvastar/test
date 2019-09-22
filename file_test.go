@@ -9,6 +9,7 @@ import (
 	"flag"
 	"os"
 	"path"
+	"regexp"
 	"runtime"
 	"strings"
 	"testing"
@@ -113,19 +114,22 @@ func TestFunctionFail(t *testing.T) {
 }
 
 func TestFunctionDiff(t *testing.T) {
-	var diff, expected string
+	var diff string
 	errorf := func(args ...interface{}) {
 		diff = args[1].(string)
 	}
 
 	modify := func(input string) (string, error) {
 		lines := strings.Split(input, "\n")
-		expected = "\n- " + lines[0] + "\n+ fist of fury"
 		return "fist of fury\n" + strings.Join(lines[1:], "\n"), nil
 	}
 
+	expected := regexp.MustCompile(
+		`-.*"first line",` + "\n" + `+.*"fist of fury",`,
+	)
+
 	test.File(errorf, "input.txt", "output.txt", modify)
-	if diff == "" || diff != expected {
+	if !expected.MatchString(diff) {
 		t.Error("Unexpected diff", diff, "expected:", expected)
 	}
 }

@@ -7,19 +7,19 @@
 
 Test is a simple golang test utils package.
 
+## test.Artifact
+
+test.Artifact allows a simple way to test artifacts against recorded
+golden files.
+
+The golden files are stored in `testdata/` folder of the caller of the
+API and are expected to contain the JSON version of the value being
+tested.  The [go-cmp](https://github.com/google/go-cmp) package is
+used for better quality diffs.
+
 ## test.File
 
-test.File implements a simple file testing utility that:
-
-1. reads input file in the testdata/ directory into a string
-2. runs this against the provided test function
-3. compares against the contents of the output file (also in the testdata/ directory) 
-4. reports discrepancies in the diff format (such as the one used by git)
-
-It also accepts a -golden flag which when specified skips the
-comparison and instead saves the output provided by the function into
-the output file.  This makes creation of initial output files and
-updates relatively easy
+This is deprecated in favor of test.Artifact.
 
 ## test.Markdown
 
@@ -89,6 +89,3 @@ destined for different packages:
 ...
 ```
 ````
-  
-
-
