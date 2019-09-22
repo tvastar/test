@@ -43,7 +43,7 @@ func Artifact(errorf Errorf, outputFile string, value interface{}) {
 
 	outputFile = filepath.Join(filepath.Dir(f.File), "testdata/"+outputFile)
 
-	bytes, err := json.Marshal(value)
+	bytes, err := json.MarshalIndent(value, "", "  ")
 	if err != nil {
 		errorf("Could not marshal value", err)
 		return
