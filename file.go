@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"time"
+	"strings"
 
-	"github.com/sergi/go-diff/diffmatchpatch"
+	"github.com/google/go-cmp/cmp"
 )
 
 // Errorf is the type of the function used for reporting errors.
@@ -86,31 +86,12 @@ func File(errorf Errorf, inputFile string, outputFile string, fn interface{}) {
 	}
 
 	if output != string(bytes) {
-		errorf("unexpected output", diff(string(bytes), output))
+		errorf("unexpected output", linediff(string(bytes), output))
 	}
 }
 
-func diff(expected, got string) string {
-	dmp := diffmatchpatch.New()
-	dmp.DiffTimeout = time.Minute * 2
-	wSrc, wDst, warray := dmp.DiffLinesToRunes(expected, got)
-	diffs := dmp.DiffMainRunes(wSrc, wDst, false)
-	diffs = dmp.DiffCharsToLines(diffs, warray)
-
-	result := ""
-	for _, line := range diffs {
-		text := line.Text
-		if text != "" && text[len(text)-1] == '\n' {
-			text = text[:len(text)-1]
-		}
-
-		if line.Type == diffmatchpatch.DiffInsert {
-			result += "\n+ " + text
-		} else if line.Type == diffmatchpatch.DiffDelete {
-			result += "\n- " + text
-		}
-	}
-	return result
+func linediff(s1, s2 string) string {
+	return cmp.Diff(strings.Split(s1, "\n"), strings.Split(s2, "\n"))
 }
 
 func invoke(fn interface{}, input string) (string, error) {
