@@ -17,11 +17,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// Errorf is the type of the function used for reporting errors.
-//
-// This is typically testing.T.Error or testing.T.Fatal
-type Errorf func(args ...interface{})
-
 // File implements testing against input/output files
 //
 // The input and output file names are relative to the testdata/
