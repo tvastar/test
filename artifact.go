@@ -5,6 +5,7 @@
 package test
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
@@ -43,11 +44,16 @@ func Artifact(errorf Errorf, outputFile string, value interface{}) {
 
 	outputFile = filepath.Join(filepath.Dir(f.File), "testdata/"+outputFile)
 
-	bytes, err := json.MarshalIndent(value, "", "  ")
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	enc.SetEscapeHTML(false)
+	enc.SetIndent("", "  ")
+	err := enc.Encode(value)
 	if err != nil {
 		errorf("Could not marshal value", err)
 		return
 	}
+	bytes := buf.Bytes()
 
 	if *goldenFlag {
 		if err := ioutil.WriteFile(outputFile, bytes, 0644); err != nil {
